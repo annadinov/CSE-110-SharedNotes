@@ -53,7 +53,7 @@ public class NoteAPI {
     }
 
     // new code
-    public String fetchNote(String title)  {
+    /*public String fetchNote(String title)  {
         // URLs cannot contain spaces, so we replace them with %20.
         title = title.replace(" ", "%20");
 
@@ -72,5 +72,5 @@ public class NoteAPI {
             e.printStackTrace();
             return "None";
         }
-    }
+    }*/
 }
