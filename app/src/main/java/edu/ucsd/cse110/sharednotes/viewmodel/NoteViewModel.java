@@ -28,8 +28,8 @@ public class NoteViewModel extends AndroidViewModel {
         // the database, or when the server returns a newer version of the note.
         // Polling interval: 3s.
         if (note == null) {
-            note = repo.getLocal(title);
-            //note = repo.getSynced(title);
+            //note = repo.getLocal(title);
+            note = repo.getSynced(title);
         }
         return note;
     }
@@ -37,6 +37,6 @@ public class NoteViewModel extends AndroidViewModel {
     public void save(Note note) {
         // TODO: try to upload the note to the server.
         repo.upsertLocal(note);
-        //repo.upsertSynced(note);
+        repo.upsertSynced(note);
     }
 }
