@@ -104,7 +104,7 @@ public class NoteRepository {
         LiveData<Note> remoteNote = new MutableLiveData<>();
         NoteViewModel noteViewModel = new NoteViewModel(new Application());
         remoteNote = noteViewModel.getNote(title);
-        return remoteNote;
+
     }
 
     public void upsertRemote(Note note) {
