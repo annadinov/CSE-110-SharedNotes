@@ -98,7 +98,7 @@ public class NoteRepository {
         executor.scheduleAtFixedRate(() -> {
             //NoteAPI api = NoteAPI.provide();
             String newNote = api.fetchNote(title);
-            remoteNote.postValue(Note.fromJSON(newNote));
+            remoteNote.setValue(Note.fromJSON(newNote));
         }, 0, 3000, TimeUnit.MILLISECONDS);
 
         return remoteNote;
