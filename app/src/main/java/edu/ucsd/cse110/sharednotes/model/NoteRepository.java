@@ -88,16 +88,18 @@ public class NoteRepository {
         // TODO: Implement getRemote!
         // TODO: Set up polling background thread (MutableLiveData?)
         // TODO: Refer to TimerService from https://github.com/DylanLukes/CSE-110-WI23-Demo5-V2.
-        //NoteAPI api = NoteAPI.provide();
-        //String note = api.fetchNote(title);
+        NoteAPI api = NoteAPI.provide();
+        String note = api.fetchNote(title);
 
-        //MutableLiveData<Note> remoteNote = new MutableLiveData<>();
-        //var executor = Executors.newSingleThreadScheduledExecutor();
-        //ScheduledFuture<?> noteFuture = executor.scheduleAtFixedRate(() -> {
-            //remoteNote.postValue(new Note(title, note));
-        //}, 0, 3000, TimeUnit.MILLISECONDS);
+        MutableLiveData<Note> remoteNote = new MutableLiveData<>();
+        var executor = Executors.newSingleThreadScheduledExecutor();
+        ScheduledFuture<?> noteFuture = executor.scheduleAtFixedRate(() -> {
+            //NoteAPI api = NoteAPI.provide();
+            String newNote = api.fetchNote(title);
+            remoteNote.postValue(Note.fromJSON(newNote));
+        }, 0, 3000, TimeUnit.MILLISECONDS);
 
-        //return remoteNote;
+        return remoteNote;
 
 
 
@@ -105,7 +107,7 @@ public class NoteRepository {
         // Then, set up a background thread that will poll the server every 3 seconds.
         // You may (but don't have to) want to cache the LiveData's for each title, so that
         // you don't create a new polling thread every time you call getRemote with the same title.
-        throw new UnsupportedOperationException("Not implemented yet");
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void upsertRemote(Note note) {
