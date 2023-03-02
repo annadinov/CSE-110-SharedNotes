@@ -3,6 +3,7 @@ package edu.ucsd.cse110.sharednotes.model;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
 
@@ -58,7 +59,7 @@ public class NoteAPI {
     }
 
     // new code
-    public String fetchNote(String title)  {
+    public Note fetchNote(String title)  {
         // URLs cannot contain spaces, so we replace them with %20.
         title = title.replace(" ", "%20");
 
@@ -72,10 +73,11 @@ public class NoteAPI {
             var body = response.body().string();
             //Note note = new Note(title, body);
             //Log.i("NOTE", body);
-            return body;
+            //return body;
+            return new Gson().fromJson(body, Note.class);
         } catch (Exception e) {
             e.printStackTrace();
-            return "None";
+            return null;
         }
     }
 
