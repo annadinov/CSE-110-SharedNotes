@@ -81,20 +81,25 @@ public class NoteAPI {
         }
     }
 
-    public void putNote(@NonNull Note note) {
+    public Note putNote(@NonNull Note note) {
         String title = note.title.replace(" ", "%20");
         Gson gson = new Gson();
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(Map.of( "content", note.content, "updated_at", note.updatedAt)));
+        RequestBody requestBody = RequestBody.create(new Gson().toJson(note), MediaType.get("application/json"));
+                //MediaType.get("application/json"), gson.toJson(Map.of( "content", note.content, "updated_at", note.updatedAt)));
         var request = new Request.Builder()
                 .url("https://sharednotes.goto.ucsd.edu/notes/" + title)
                 .put(requestBody)
                 .build();
 
         try (var response = client.newCall(request).execute()) {
-            // assert response.isSuccessful() == true;
+
+            assert response.isSuccessful() == true;
+            var body = response.body().string();
             Log.i("putNote: ", gson.toJson(Map.of( "content", note.content, "updated_at", note.updatedAt)));
+            return new Gson().fromJson(body, Note.class);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
