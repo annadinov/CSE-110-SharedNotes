@@ -2,12 +2,17 @@ package edu.ucsd.cse110.sharednotes.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Map;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class NoteAPI {
     // TODO: Implement the API using OkHttp!
@@ -71,6 +76,23 @@ public class NoteAPI {
         } catch (Exception e) {
             e.printStackTrace();
             return "None";
+        }
+    }
+
+    public void putNote(@NonNull Note note) {
+        String title = note.title.replace(" ", "%20");
+        Gson gson = new Gson();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(Map.of( "content", note.content, "updated_at", note.updatedAt)));
+        var request = new Request.Builder()
+                .url("https://sharednotes.goto.ucsd.edu/notes/" + title)
+                .put(requestBody)
+                .build();
+
+        try (var response = client.newCall(request).execute()) {
+            // assert response.isSuccessful() == true;
+            Log.i("putNote: ", gson.toJson(Map.of( "content", note.content, "updated_at", note.updatedAt)));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
