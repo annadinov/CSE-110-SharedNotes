@@ -39,4 +39,5 @@ public class NoteViewModel extends AndroidViewModel {
         //repo.upsertLocal(note);
         repo.upsertSynced(note);
     }
+
 }

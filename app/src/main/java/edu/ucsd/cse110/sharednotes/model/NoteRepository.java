@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -90,10 +91,11 @@ public class NoteRepository {
         // TODO: Refer to TimerService from https://github.com/DylanLukes/CSE-110-WI23-Demo5-V2.
         NoteAPI api = NoteAPI.provide();
         String note = api.fetchNote(title);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
         MutableLiveData<Note> remoteNote = new MutableLiveData<>();
-        var executor = Executors.newSingleThreadScheduledExecutor();
-        ScheduledFuture<?> noteFuture = executor.scheduleAtFixedRate(() -> {
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
             //NoteAPI api = NoteAPI.provide();
             String newNote = api.fetchNote(title);
             remoteNote.postValue(Note.fromJSON(newNote));
@@ -115,4 +117,5 @@ public class NoteRepository {
         NoteAPI api = new NoteAPI();
         api.putNote(note);
     }
+
 }
